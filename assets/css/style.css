@@ -1,12 +1,121 @@
 @charset "UTF-8";
 
-.container {
-  display: grid;
+.practice-flex {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
   height: 100vh;
 }
 
-/*
-================================
-アニメーション内容を記述
-================================
-*/
+/* 左から右に流れる */
+.flow-button {
+  padding: 1rem 1.5rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  background: linear-gradient(90deg, #0bd, #05b);
+  background-size: 200% 100%; /* 背景を広げて流れる効果を作る */
+  transition: background-position 0.4s ease; /* なめらかな動き */
+}
+.flow-button:hover {
+  background-position: -100% 0; /* 背景を右から左に移動 */
+}
+
+/* グラデーションボタン */
+.btn-container {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  border-radius: 12px;
+  padding: 3px;
+}
+
+.btn-inner-1 {
+  position: relative;
+  z-index: 1;
+  padding: 1rem;
+  border-radius: 10px;
+  border: 0;
+  background-color: #fff;
+}
+
+.btn-container::before {
+  content: "";
+  background: linear-gradient(90deg, #0bd, #f6b);
+  height: 300px;
+  width: 300px;
+  position: absolute;
+  top: -150%;
+  left: -20%;
+  animation: rotate-line 1s linear infinite;
+}
+
+@keyframes rotate-line {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* グラデーション@property */
+@property --angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.btn-inner-2 {
+  display: inline-flex;
+  padding: 1rem;
+  border-radius: 12px;
+  background-image:
+  linear-gradient(white, white), /* 内側の背景色(padding-boxに適用) */
+  conic-gradient(from var(--angle), #0bd, #f6b, #0bd); /* ボーダー部分のグラデーション(border-boxに適用) */
+  background-origin: border-box; /* グラデーションの描画起点 */
+  background-clip: padding-box, border-box; /* 背景の描画範囲: 内側はpaddingまで、外側はborderまで */
+  --border-width: 3px;
+  border: var(--border-width) solid transparent; /* 実際のボーダー自体は透明にしてconic-gradientをチラ見せ */
+  animation: angle-animation 1s linear infinite;
+}
+
+@keyframes angle-animation {
+  to {
+    --angle: 360deg; /* 1turnでも可 */
+  }
+}
+
+/* キラーンと光るボタン */
+.btn-shine {
+  position: relative;
+  padding: 1rem 1.5rem;
+  border: 0;
+  border-radius: 8px;
+  color: #fff;
+  background-color: #0bd;
+  overflow: hidden;
+}
+.btn-shine::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.6) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-20deg);
+}
+.btn-shine:hover::before {
+  translate: 300% 0;
+  transition: .5s;
+}
